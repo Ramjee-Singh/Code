@@ -1,0 +1,27 @@
+import os
+import xml.etree.ElementTree as ET
+
+def list_directory(path, parent_element):
+    lines = os.listdir(path)
+    for line in lines:
+        print("{0}".format(line))
+        if os.path.isdir(f"{path}/{line}"):
+            
+            curr_element = ET.SubElement(parent_element, "directory")
+            curr_element.set("name", line )
+            list_directory(f"{path}/{line}", curr_element )
+        else:
+            curr_element = ET.SubElement(parent_element, "file")
+            curr_element.set("name", line)
+            
+
+
+path = "path_to_generate.xml"
+root_elem =  ET.Element("device-tree")
+list_directory(path, root_elem)
+tree = ET.ElementTree(root_elem)
+tree.write("directory-content.xml", encoding="utf-8", xml_declaration=True)
+
+
+
+            
